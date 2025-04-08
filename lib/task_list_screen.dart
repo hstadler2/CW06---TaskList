@@ -13,17 +13,18 @@ class _TaskListScreenState extends State<TaskListScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _tasksRef = FirebaseFirestore.instance.collection('tasks');
 
-  // Controllers for the new task form.
+  // Controllers for new task input fields.
   final TextEditingController _taskController = TextEditingController();
   final TextEditingController _subtasksController = TextEditingController();
 
-  // Adds a new task to Firestore.
+  // Add a new task.
   Future<void> _addTask() async {
     final user = _auth.currentUser;
     if (user == null) return;
     String taskName = _taskController.text.trim();
     if (taskName.isEmpty) return;
-    // Parse subtasks from a comma-separated string.
+
+    // Parse subtasks (comma-separated).
     List<String> subtasks = [];
     if (_subtasksController.text.trim().isNotEmpty) {
       subtasks = _subtasksController.text
@@ -43,18 +44,18 @@ class _TaskListScreenState extends State<TaskListScreen> {
     _subtasksController.clear();
   }
 
-  // Toggles the completed status of a task.
+  // Toggle task completion.
   Future<void> _toggleTask(DocumentSnapshot task) async {
     bool currentStatus = task['completed'] ?? false;
     await _tasksRef.doc(task.id).update({'completed': !currentStatus});
   }
 
-  // Deletes a task.
+  // Delete a task.
   Future<void> _deleteTask(String taskId) async {
     await _tasksRef.doc(taskId).delete();
   }
 
-  // Logs out the current user.
+  // Sign out.
   void _logout() async {
     await AuthService.signOut();
   }
@@ -75,7 +76,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
       body: Column(
         children: [
-          // Input fields for adding a new task.
+          // Input area for a new task.
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -105,7 +106,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
             ),
           ),
           const Divider(),
-          // Displays the list of tasks for the current user.
+          // List of tasks from Firestore.
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: _tasksRef
@@ -114,7 +115,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return const Center(child: Text('Error fetching tasks'));
+                  // Show the actual error message.
+                  return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -159,7 +161,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                 ),
                               ],
                             ),
-                            // If the task includes subtasks, display them as a nested list.
+                            // Nested list for subtasks.
                             if (subtasks != null && subtasks.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(left: 40.0, top: 4.0),
@@ -167,7 +169,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: subtasks.map((subtask) => Text("- $subtask")).toList(),
                                 ),
-                              )
+                              ),
                           ],
                         ),
                       ),
@@ -176,7 +178,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
+import 'firebase_options.dart'; 
 import 'auth_service.dart';
 import 'task_list_screen.dart';
 
@@ -20,14 +20,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Task Manager App',
-      // AuthWrapper shows either the login/registration screen or the TaskListScreen
+      // AuthWrapper listens to auth state changes to show the proper screen.
       home: const AuthWrapper(),
     );
   }
 }
 
-// Listens to auth state changes.
-// If a user is logged in, we show the TaskListScreen; otherwise, we show the AuthenticationScreen.
+// If the user is logged in, show the task list screen; otherwise, show the login/registration screen.
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({Key? key}) : super(key: key);
   @override
@@ -45,7 +44,7 @@ class AuthWrapper extends StatelessWidget {
   }
 }
 
-// This screen shows the registration and sign‑in forms.
+// AuthenticationScreen with registration and sign-in forms.
 class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
   @override
@@ -77,14 +76,14 @@ class RegisterEmailSection extends StatefulWidget {
 
 class _RegisterEmailSectionState extends State<RegisterEmailSection> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // Controllers for email and password fields.
+  // Controllers for email and password input.
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _success = false;
   bool _initialState = true;
   String? _userEmail;
 
-  // Registers a new user using AuthService.
+  // Register a new user using AuthService.
   void _register() async {
     if (_formKey.currentState!.validate()) {
       bool result = await AuthService.registerWithEmail(
@@ -161,7 +160,7 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
   }
 }
 
-// Sign‑in form widget.
+// Sign-in form widget.
 class EmailPasswordForm extends StatefulWidget {
   const EmailPasswordForm({Key? key}) : super(key: key);
   @override
@@ -170,14 +169,14 @@ class EmailPasswordForm extends StatefulWidget {
 
 class _EmailPasswordFormState extends State<EmailPasswordForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // Controllers for email and password fields.
+  // Controllers for email and password.
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _success = false;
   bool _initialState = true;
   String _userEmail = '';
 
-  // Signs in using AuthService.
+  // Sign in using AuthService.
   void _signIn() async {
     if (_formKey.currentState!.validate()) {
       bool result = await AuthService.signInWithEmail(

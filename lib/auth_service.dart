@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-// A simple service class to wrap Firebase Authentication methods.
+// A service class for Firebase Authentication methods.
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Registers a user with email and password.
   static Future<bool> registerWithEmail(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return true;
     } catch (e) {
       print('Error in registerWithEmail: $e');
