@@ -36,7 +36,7 @@ class DefaultFirebaseOptions {
     }
   }
 
-   static const FirebaseOptions web = FirebaseOptions(
+  static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyC2V-1cCSriotCE2tL4v0FuBWSm3zQnUsc',
     appId: '1:255152092253:web:9d8ba6d55fb573e336c9b4',
     messagingSenderId: '255152092253',
@@ -63,6 +63,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'cw06-5f028.firebasestorage.app',
     measurementId: 'G-96LQC5JVS2',
   );
+
 }
-
-

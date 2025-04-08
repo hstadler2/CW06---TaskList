@@ -1,17 +1,17 @@
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
+    // Required for Firebase
     id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.classact13"
+    // IMPORTANT: Must match the package_name from google-services.json
+    namespace = "com.example.cw6" 
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973" // Using the required NDK version
+    ndkVersion = "27.0.12077973"  // for firebase plugins
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -23,8 +23,13 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.classact13"
-        minSdkVersion(23) // Increase minSdk to 23 as required by firebase_auth
+        // This must exactly match the "package_name" in google-services.json
+        applicationId = "com.example.cw6"
+
+        // minSdk 23 is required for recent firebase_auth versions
+        minSdkVersion(23)
+
+        // Use your Flutter config for the target/versions
         targetSdkVersion(flutter.targetSdkVersion)
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -32,7 +37,7 @@ android {
 
     buildTypes {
         release {
-            // For now, using the debug signing config so release builds work.
+            // For easy testing, you can use the debug signing config, or add your own.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
